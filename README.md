@@ -15,7 +15,8 @@ This repository provides an implementation of MIDI-VALLE, a system that adapts t
 ## Dataset & Checkpoints
 Due to the copyright issues, we cannot provide the audios for the ATEPP dataset, but the midi files are available in the [ATEPP repository](https://github.com/tangjjbetsy/ATEPP). The checkpoints for Piano-Enodec and the MIDI-VALLE could be downloaded from [Zenodo](). 
 
-## Installation
+## How to Train and Infer
+### Environment Setup
 To install the necessary dependencies, run the following command:
 ```
 # AudioCraft
@@ -59,7 +60,7 @@ cd midi-valle
 pip install -e .
 ```
 
-## Prepare Dataset
+### Prepare Dataset
 The midi files and audio files were cut into segments first and then were tokenized.
 
 ```
@@ -78,7 +79,9 @@ python atepp.py
 bash prepare.sh --stage -2 --stop-stage 3
 ```
 
-## Training
+### Training
+To train the MIDI-VALLE model, you can use the following command. Make sure to adjust the parameters according to your needs. The training will take a long time, so we recommend using a GPU with at least 24GB of memory.
+
 ```
 # path to save the model checkpoints
 exp_dir=exp/midi-valle 
@@ -94,30 +97,41 @@ python3 bin/trainer.py --num-buckets 12 --save-every-n 20000 --valid-interval 10
     --inf-check True  --world-size 1
 ```
 
-## Inference
+### Inference
+We recommend using the [MIDI-VALLE Colab](https://colab.research.google.com/drive/1JuQ7uv8lPbdQhF7xCrcGFg-rCFQ0tPgU?usp=sharing) for a quick attempt to synthesize expressive piano performances. If you want to run the inference locally, please follow the steps below.
+
 ```
+##### Prepare the data #####
 cd egs/atepp
 # Inference on a single midi file (prompts are required)
 PROMPT_MIDI="prompts/prompt_A.midi"
 PROMPT_WAV="prompts/prompt_A.wav"
 PATH_TO_DATA="path_to_your_midi_folder"
 PATH_TO_OUTPUT_DIR="path_to_your_output_folder" # For saving intermediate files
-##### Prepare the data #####
+
 cd local
 # Segment the target midi file
 python data_prepare.py prepare_segments --data_path ${PATH_TO_DATA} --out_path ${PATH_TO_OUTPUT_DIR}
+
 # Integrate the prompt midi and the target midi
-python data_prepare.py process_for_performance_inference_colab --data_path ${PATH_TO_OUTPUT_DIR} --out_path ${PATH_TO_OUTPUT_DIR}--prompt-midi-dir ${PROMPT_MIDI} --prompt-wav-dir ${PROMPT_WAV}
+python data_prepare.py process_for_performance_inference_colab --data_path ${PATH_TO_OUTPUT_DIR} --out_path ${PATH_TO_OUTPUT_DIR} --prompt-midi-dir ${PROMPT_MIDI} --prompt-wav-dir ${PROMPT_WAV}
+
 # Tokenize the midi files
-python midi_tokenize.py --data_folder ${PATH_TO_OUTPUT_DIR} --target_folder cat_target # where cat_XXX could be the name of the target midi file, check the sub-folder under ${PATH_TO_OUTPUT_DIR}
+python midi_tokenize.py --data_folder ${PATH_TO_OUTPUT_DIR} --target_folder cat_target 
+# cat_XXX could be the name of the target midi file, check the sub-folder under ${PATH_TO_OUTPUT_DIR}
+```
 
-# For any midi segment, you can run the inference as follows:
-midi="target_midi_0.npy|target_midi_1.npy|..." # The midi segments to be synthesized, separated by '|'
+After running the above commands, you will have segmented midi files concatenated with the prompt midi and tokenised.
+
+```
+# Inference on the target midi files
+cd egs/atepp # Change to the directory where the inference script is located
+
+midi="target_midi_0_cat.npy|target_midi_1_cat.npy|..." # The path to midi segments to be synthesized, separated by '|'
 output_file="output"
-
-# Inference
 output_dir="midi-valle/egs/atepp/output"
 checkpoint="midi-valle/egs/atepp/checkpoints/best-valid-loss.pt"
+
 python3 bin/infer.py \
   --output-dir ${output_dir} \
   --checkpoint=${checkpoint} \
