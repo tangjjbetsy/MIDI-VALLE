@@ -250,7 +250,7 @@ class AudioTokenizer32FT:
         device: Any = None,
     ) -> None:
         # Instantiate a pretrained EnCodec model
-        model = CompressionModel.get_pretrained('/data/home/acw555/ATEPP-valle/checkpoints/xps/1f216fd6/compression_32khz_new.bin')
+        model = CompressionModel.get_pretrained('checkpoints/compression_32khz_new.bin')
         # model = CompressionModel.get_pretrained('facebook/encodec_32khz')
         
         if not device:

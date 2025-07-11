@@ -11,8 +11,7 @@ from .macros import (
     SPEAKER_EMBEDDING_DIM,
 )
 from .transformer import Transformer
-from .valle import VALLE, VALLF, BertVALLE
-from .bert import ExpressionBertLM, ExpressionBert
+from .valle import VALLE, VALLF
 # from .visualizer import visualize
 
 
@@ -123,22 +122,6 @@ def get_model(params: AttributeDict) -> nn.Module:
             prepend_bos=params.prepend_bos,
             num_quantizers=params.num_quantizers,
         )
-    elif params.model_name.lower() in ["bert-valle", "bertvalle"]:
-        valle = VALLE(
-            params.decoder_dim,
-            params.nhead,
-            params.num_decoder_layers,
-            norm_first=params.norm_first,
-            add_prenet=params.add_prenet,
-            prefix_mode=params.prefix_mode,
-            share_embedding=params.share_embedding,
-            nar_scale_factor=params.scale_factor,
-            prepend_bos=params.prepend_bos,
-            num_quantizers=params.num_quantizers,
-        )
-        bert = ExpressionBert()
-        bertlm = ExpressionBertLM(bert)
-        model = BertVALLE(bertlm, valle)
     else:
         assert params.model_name in ["Transformer"]
         model = Transformer(

@@ -350,7 +350,7 @@ def get_midi_audio_pairs(data_path, out_path, audio=True):
             elif dataset == "pijama":
                 audio_file = midi_file.replace(".midi", ".mp3").replace("midi", "audio")
             else:
-                audio_file = midi_file.replace(".midi", ".wav").replace("midi", "audio")
+                audio_file = midi_file.replace(".mid", ".mp3").replace("midi", "audio")
 
             if not os.path.exists(audio_file):
                 logger.warning(f"Audio file {audio_file} does not exist for {basename}. Skipping.")
@@ -442,16 +442,17 @@ def process_for_batch_inference(data_path, datasets=["ATEPP", "maestro", "pijama
 def process_for_performance_inference(data_path, out_path, prompt_midi_dir, prompt_wav_dir):
     logger.info("Preparing prompts and concat for individual performance")
     midi_paths = sorted(
-        glob.glob(f"{data_path}/*.midi"),
-        key=lambda x: int(x.split("_")[-1].split(".")[0])
+        glob.glob(f"{data_path}/**/*.midi", recursive=True),
+        key=lambda x: int(x.split("/")[-1].split("_")[-1].split(".")[0])
     )
-    perf_id = os.path.basename(data_path).split(".")[0].split("_")[1]
-    indiv_out = os.path.join(out_path, perf_id)
-    cat_dir = os.path.join(out_path, f"cat_{perf_id}")
-    os.makedirs(indiv_out, exist_ok=True)
-    os.makedirs(cat_dir, exist_ok=True)
 
     for midi_path in tqdm(midi_paths):
+        perf_id = os.path.basename(midi_path).split(".")[0].split("_")[0]
+        indiv_out = os.path.join(out_path, perf_id)
+        cat_dir = os.path.join(out_path, f"cat_{perf_id}")
+        os.makedirs(indiv_out, exist_ok=True)
+        os.makedirs(cat_dir, exist_ok=True)
+
         basename = os.path.basename(midi_path).split(".")[0]
 
         midi_prompt_path = os.path.join(indiv_out, f"prompt.midi")

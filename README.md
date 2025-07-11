@@ -49,6 +49,7 @@ source ~/.zshrc
 # midi
 pip install pretty_midi==0.2.10
 pip install miditok==3.0.2
+pip install -q numpy==1.26.4
 
 # midi-valle
 cd midi-valle
@@ -66,7 +67,7 @@ PATH_TO_MIDI_DIR="ATEPP-midi-valle/midi_seg"
 
 # Prepare the midi tokens
 cd local
-python data_prepare.py --mode prepare_segments --data-path ${PATH_TO_ATEPP_CORPUS} --out-path ${PATH_TO_OUTPUT_DIR} --audio
+python data_prepare.py prepare_segments --data_path ${PATH_TO_ATEPP_CORPUS} --out_path ${PATH_TO_OUTPUT_DIR} --audio
 # Tokenise the midi files
 python midi_tokenize.py --data_folder ${PATH_TO_MIDI_DIR} --target_folder ${PATH_TO_MIDI_DIR}
 # Prepare the audio tokens
@@ -97,9 +98,9 @@ PROMPT_MIDI="ATEPP-midi-valle/prompt_midi.midi"
 PROMPT_WAV="ATEPP-midi-valle/prompt_wav.wav"
 cd local
 # Segment the midi file
-python data_prepare.py --mode prepare_segments --data-path ${PATH_TO_ATEPP_CORPUS} --out-path ${PATH_TO_OUTPUT_DIR}
+python data_prepare.py prepare_segments --data_path ${PATH_TO_DATA} --out_path ${PATH_TO_OUTPUT_DIR}
 # Prepare the prompt midi and audio files
-python data_prepare.py --mode process_for_performance_inference --data-path ${PATH_TO_OUTPUT_DIR} --out-path ${PATH_TO_OUTPUT_DIR} \
+python data_prepare.py process_for_performance_inference --data_path ${PATH_TO_OUTPUT_DIR} --out_path ${PATH_TO_OUTPUT_DIR} \
     --prompt-midi-dir ${PROMPT_MIDI} --prompt-wav-dir ${PROMPT_WAV}
 # Tokenize the midi files
 python midi_tokenize.py --data_folder ${PATH_TO_OUTPUT_DIR} --target_folder ${PATH_TO_OUTPUT_DIR}

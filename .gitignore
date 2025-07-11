@@ -15,3 +15,7 @@ egs/libritts/prompts/*.png
 
 valle/version.py
 *.tar
+
+*.pt
+*.pth
+*.bin
