@@ -145,7 +145,8 @@ python3 bin/infer.py \
 ### Objective Metrics
 The Chroma and spectrogram distance metrics can be computed using the tools release in [here](https://github.com/tangjjbetsy/S2A/tree/dev/objective_eval).
 
-For the FAD, please follow the instructions in the `fadtk` and run the following command:
+For the FAD, please follow the instructions in the `fadtk` (copied from [microsoft released version](https://github.com/microsoft/fadtk) and added Piano-Encodec as a custom model) and run the following command:
+
 ```
 fadtk encodec-music /path/to/baseline/audio /path/to/evaluation/audio
 ```
