@@ -250,7 +250,7 @@ def main():
                 )
                 # store
                 torchaudio.save(
-                    f"{args.output_dir}/{args.output_file}.wav", samples[0].cpu(), 32000
+                    f"{args.output_dir}/{args.output_file}_{n}.wav", samples[0].cpu(), 32000
                 )
             else:  # Transformer
                 pass

@@ -12,7 +12,7 @@ stop_stage=3
 
 dataset_parts="--dataset-parts all"  # all
 
-folder_name=data_large_new
+folder_name=data
 audio_extractor="Encodec32FT"  # or Fbank
 audio_feats_dir=${folder_name}/tokenized
 
