@@ -181,15 +181,14 @@ def seg_one(midi_wav_args_list):
     
 def seg_one_midi_only(midi_wav_args_list):
     duration = midi_wav_args_list[0]
-    midi_path = midi_wav_args_list[1]
-    basename = midi_wav_args_list[2]
-    data_path = midi_wav_args_list[4]
-    output_path = midi_wav_args_list[5]
-    split = midi_wav_args_list[6]
+    midi_path = midi_wav_args_list[2]
+    basename = midi_wav_args_list[3]
+    data_path = midi_wav_args_list[5]
+    output_path = midi_wav_args_list[6]
+    split = midi_wav_args_list[7]
     
     midi_dir = os.path.join(data_path, midi_path)
     midi = pretty_midi.PrettyMIDI(midi_dir)
-    
     
     midi_segment_dir = os.path.join(output_path, f"midi_seg/{split}", basename + f"_0.midi")
 
@@ -215,8 +214,8 @@ def seg_one_midi_only(midi_wav_args_list):
     seg_lens.append(duration - seg_points[-1])
     counts = [0] * len(seg_points)  # Placeholder counts since we're not using note counts
     
-    os.makedirs(os.path.join(output_path, f"seg_info/{split}"), exist_ok=True)
-    np.savez(os.path.join(output_path, f"seg_info/{split}", basename + f".npz"), seg_points=seg_points, counts=counts, seg_lens=seg_lens)
+    # os.makedirs(os.path.join(output_path, f"seg_info/{split}"), exist_ok=True)
+    # np.savez(os.path.join(output_path, f"seg_info/{split}", basename + f".npz"), seg_points=seg_points, counts=counts, seg_lens=seg_lens)
     
 
     for i in range(len(seg_points) - 1):
@@ -226,7 +225,7 @@ def seg_one_midi_only(midi_wav_args_list):
                 logger.warning(f"Seg {i} from {seg_points[i]}s to {seg_points[i+1]}s is only {seg_lens[i]} seconds, which is too short, so skip for performance {perf_id}")
             continue
         
-        midi_segment_dir = os.path.join(output_path, f"midi_seg/{split}", basename + f"_{i}.midi")        
+        midi_segment_dir = os.path.join(output_path, basename + f"_{i}.midi")        
         start = seg_points[i]
         end = seg_points[i + 1]
         
@@ -340,7 +339,7 @@ def get_midi_audio_pairs(data_path, out_path, audio=True):
 
     midi_wav_args_list = []
     for midi_file in tqdm(midi_files):
-        dataset = midi_file.split("/")[-3]
+        dataset = midi_file.split("/")[-3] 
         basename = os.path.basename(midi_file).split(".")[0]
         duration = pretty_midi.PrettyMIDI(midi_file).get_end_time()
 
@@ -349,8 +348,11 @@ def get_midi_audio_pairs(data_path, out_path, audio=True):
                 audio_file = midi_file.replace(".mid", ".mp3").replace("midi", "audio")
             elif dataset == "pijama":
                 audio_file = midi_file.replace(".midi", ".mp3").replace("midi", "audio")
+            elif dataset == "maestro":
+                audio_file = midi_file.replace(".mid", ".mp3").replace("midi", "audio")
             else:
                 audio_file = midi_file.replace(".mid", ".mp3").replace("midi", "audio")
+                dataset = "test"
 
             if not os.path.exists(audio_file):
                 logger.warning(f"Audio file {audio_file} does not exist for {basename}. Skipping.")
@@ -358,6 +360,7 @@ def get_midi_audio_pairs(data_path, out_path, audio=True):
             
         else:
             audio_file = None
+            dataset = "test"
        
         midi_wav_args_list.append([
             duration, audio_file, midi_file, basename, 0,
@@ -401,7 +404,7 @@ def prepare_segments(data_path, out_path, audio=True):
     logger.info("Stage 0: Generating MIDI-Audio Pairs")
 
     args_list = get_midi_audio_pairs(data_path, out_path, audio=audio)
-
+    print(args_list)
     with multiprocessing.Pool(processes=8) as pool:
         if audio:
             for _ in tqdm(pool.imap(seg_one, args_list), total=len(args_list)):
@@ -439,7 +442,7 @@ def process_for_batch_inference(data_path, datasets=["ATEPP", "maestro", "pijama
         prompt_dir = f"{data_path}/{dataset}/prompt_gt"
         concat_prompts_with_original(data_path, dataset, prompt_dir)
 
-def process_for_performance_inference(data_path, out_path, prompt_midi_dir, prompt_wav_dir):
+def process_for_performance_inference_colab(data_path, out_path, prompt_midi_dir, prompt_wav_dir):
     logger.info("Preparing prompts and concat for individual performance")
     midi_paths = sorted(
         glob.glob(f"{data_path}/**/*.midi", recursive=True),
@@ -448,23 +451,23 @@ def process_for_performance_inference(data_path, out_path, prompt_midi_dir, prom
 
     for midi_path in tqdm(midi_paths):
         perf_id = os.path.basename(midi_path).split(".")[0].split("_")[0]
-        indiv_out = os.path.join(out_path, perf_id)
+        # indiv_out = os.path.join(out_path, perf_id + "_prompt")
         cat_dir = os.path.join(out_path, f"cat_{perf_id}")
-        os.makedirs(indiv_out, exist_ok=True)
+        # os.makedirs(indiv_out, exist_ok=True)
         os.makedirs(cat_dir, exist_ok=True)
 
         basename = os.path.basename(midi_path).split(".")[0]
 
-        midi_prompt_path = os.path.join(indiv_out, f"prompt.midi")
-        audio_prompt_path = os.path.join(indiv_out, f"prompt.wav")
+        # midi_prompt_path = os.path.join(indiv_out, f"prompt.midi")
+        # audio_prompt_path = os.path.join(indiv_out, f"prompt.wav")
         cat_path = os.path.join(cat_dir, f"{basename}_cat.midi")
 
-        midi_prompt, audio_prompt = prepare_infer_prompts(prompt_midi_dir, prompt_wav_dir, 0, 3)
-        midi_prompt.write(midi_prompt_path)
-        scipy.io.wavfile.write(audio_prompt_path, SAMPLE_RATE, audio_prompt)
+        # midi_prompt, audio_prompt = prepare_infer_prompts(prompt_midi_dir, prompt_wav_dir, 0, 3)
+        # midi_prompt.write(midi_prompt_path)
+        # scipy.io.wavfile.write(audio_prompt_path, SAMPLE_RATE, audio_prompt)
 
         try:
-            concat_midi_files(midi_prompt_path, midi_path, cat_path)
+            concat_midi_files(prompt_midi_dir, midi_path, cat_path)
         except Exception as e:
             logger.warning(f"Concat failed for {basename}: {e}")
             continue
@@ -494,8 +497,8 @@ if __name__ == "__main__":
     print(f"Data Path: {args.data_path}")
 
     if args.mode == 'prepare_segments':
-        prepare_segments(args.data_path, args.out_path)
+        prepare_segments(args.data_path, args.out_path, args.audio)
     elif args.mode == 'process_for_batch_inference':
         process_for_batch_inference(args.data_path, args.datasets)
     else:
-        process_for_performance_inference(args.data_path, args.out_path, args.prompt_midi_dir, args.prompt_wav_dir)
+        process_for_performance_inference_colab(args.data_path, args.out_path, args.prompt_midi_dir, args.prompt_wav_dir)
