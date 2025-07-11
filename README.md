@@ -13,7 +13,7 @@ by Jingjing Tang, Xin Wang, Zhe Zhang, Junichi Yamagishi, Geraint Wiggins, and G
 This repository provides an implementation of MIDI-VALLE, a system that adapts the [VALL-E]((https://arxiv.org/abs/2301.02111)) model for expressive piano performance synthesis. The system is designed to synthesize expressive piano performances from MIDI files. We adapt the [unofficial VALL-E implementation](https://github.com/lifeiteng/vall-e) and modify it to handle MIDI data. It's recommended to use the [MIDI-VALLE Colab](https://colab.research.google.com/drive/1JuQ7uv8lPbdQhF7xCrcGFg-rCFQ0tPgU?usp=sharing) for a quick attempt to synthesize expressive piano performances.
 
 ## Dataset & Checkpoints
-Due to the copyright issues, we cannot provide the audios for the ATEPP dataset, but the midi files are available in the [ATEPP repository](https://github.com/tangjjbetsy/ATEPP). The checkpoints for Piano-Enodec and the MIDI-VALLE could be downloaded from [Zenodo](). 
+Due to the copyright issues, we cannot provide the audios for the ATEPP dataset, but the midi files are available in the [ATEPP repository](https://github.com/tangjjbetsy/ATEPP). The checkpoints for Piano-Enodec and the MIDI-VALLE could be downloaded from [Zenodo](). Please put the checkpoints in the `midi-valle/egs/atepp/checkpoints` directory.
 
 ## How to Train and Infer
 ### Environment Setup
@@ -140,6 +140,21 @@ python3 bin/infer.py \
   --midi ${midi} \
   --audio-tokenizer Encodec32FT \
   --output-file ${output_file}
+```
+
+### Objective Metrics
+The Chroma and spectrogram distance metrics can be computed using the tools release in [here](https://github.com/tangjjbetsy/S2A/tree/dev/objective_eval).
+
+For the FAD, please follow the instructions in the `fadtk` and run the following command:
+```
+fadtk encodec-music /path/to/baseline/audio /path/to/evaluation/audio
+```
+
+The performances used for the evaluation are listed in the:
+```
+fadtk/datasets/ATEPP-1.2-clean-sample.csv,
+fadtk/datasets/maestro-v3.0.0-sample.csv, 
+fadtk/datasets/pijama_sample.csv
 ```
 
 ## Demo
