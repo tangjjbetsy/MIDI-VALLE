@@ -1,5 +1,5 @@
 # MIDI-VALLE: Piano Performance Synthesis with VALL-E
-[![Codes](https://img.shields.io/badge/GitHub-Midi--VALLE-blue?logo=github)](https://github.com/nii-yamagishilab/MIDI-VALLE)
+[![Colab](https://img.shields.io/badge/Colab-Midi--VALLE-blue?logo=googlecolab)](https://colab.research.google.com/drive/1JuQ7uv8lPbdQhF7xCrcGFg-rCFQ0tPgU?usp=sharing)
 [![Pre-trained Models](https://img.shields.io/badge/Models-Zenodo-9cf?logo=zenodo)](https://zenodo.org/records/15976272)
 [![arXiv](https://img.shields.io/badge/arXiv-2507.08530-b31b1b.svg)](https://arxiv.org/abs/2507.08530)
 [![Conference](https://img.shields.io/badge/Conference-ISMIR%202025-green)](https://ismir2025.ismir.net/)
