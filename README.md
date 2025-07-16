@@ -1,9 +1,12 @@
 # MIDI-VALLE: Piano Performance Synthesis with VALL-E
-[![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1JuQ7uv8lPbdQhF7xCrcGFg-rCFQ0tPgU?usp=sharing)
-[![arXiv](https://img.shields.io/badge/arXiv-2501.10222v1-b31b1b.svg)](https://arxiv.org/abs/2501.10222v1)
-![Conference](https://img.shields.io/badge/Conference-ISMIR%202025-green)
+[![Codes](https://img.shields.io/badge/GitHub-Midi--VALLE-blue?logo=github)](https://github.com/tangjjbetsy/MIDI-VALLE)
+[![Pre-trained Models](https://img.shields.io/badge/Models-Zenodo-9cf?logo=zenodo)](https://zenodo.org/records/15976272)
+[![arXiv](https://img.shields.io/badge/arXiv-2507.08530-b31b1b.svg)](https://arxiv.org/abs/2507.08530)
+[![Conference](https://img.shields.io/badge/Conference-ISMIR%202025-green)](https://ismir2025.ismir.net/)
+[![License](https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-lightgrey)](https://zenodo.org/records/15976272/files/LICENSE?download=1)
 
-This repository contains the official implementation of our ISMIR 2025 [paper](https://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=10890623)
+
+This repository contains the official implementation of our ISMIR 2025 [paper](https://arxiv.org/abs/2507.08530)
 
 **"MIDI-VALLE: Improving Expressive Piano Performance Synthesis Through Neural Codec Language Modelling"**
 
@@ -13,7 +16,7 @@ by Jingjing Tang, Xin Wang, Zhe Zhang, Junichi Yamagishi, Geraint Wiggins, and G
 This repository provides an implementation of MIDI-VALLE, a system that adapts the [VALL-E]((https://arxiv.org/abs/2301.02111)) model for expressive piano performance synthesis. The system is designed to synthesize expressive piano performances from MIDI files. We adapt the [unofficial VALL-E implementation](https://github.com/lifeiteng/vall-e) and modify it to handle MIDI data. It's recommended to use the [MIDI-VALLE Colab](https://colab.research.google.com/drive/1JuQ7uv8lPbdQhF7xCrcGFg-rCFQ0tPgU?usp=sharing) for a quick attempt to synthesize expressive piano performances.
 
 ## Dataset & Checkpoints
-Due to the copyright issues, we cannot provide the audios for the ATEPP dataset, but the midi files are available in the [ATEPP repository](https://github.com/tangjjbetsy/ATEPP). The checkpoints for Piano-Enodec and the MIDI-VALLE could be downloaded from [Zenodo](). Please put the checkpoints in the `midi-valle/egs/atepp/checkpoints` directory.
+Due to the copyright issues, we cannot provide the audios for the ATEPP dataset, but the midi files are available in the [ATEPP repository](https://github.com/tangjjbetsy/ATEPP). The checkpoints for Piano-Enodec and the MIDI-VALLE could be downloaded from [Zenodo](https://zenodo.org/records/15976272). Please put the checkpoints in the `midi-valle/egs/atepp/checkpoints` directory.
 
 ## How to Train and Infer
 ### Environment Setup
