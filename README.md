@@ -146,7 +146,7 @@ python3 bin/infer.py \
 ```
 
 ### Objective Metrics
-The Chroma and spectrogram distance metrics can be computed using the tools release in [here](https://github.com/tangjjbetsy/S2A/tree/dev/objective_eval).
+The Chroma and spectrogram distance metrics can be computed using the tools release in [here](https://github.com/nii-yamagishilab/score-to-audio/tree/main/objective_eval).
 
 For the FAD, please follow the instructions in the `fadtk` (copied from [microsoft released version](https://github.com/microsoft/fadtk) and added Piano-Encodec as a custom model) and run the following command:
 
@@ -171,4 +171,4 @@ Jingjing Tang: `jingjing.tang@qmul.ac.uk`
 The code is licensed under Apache License Version 2.0, following the [unofficial implementation](https://github.com/lifeiteng/vall-e) of VALLE. The pretrained model is licensed under the Creative Commons License: Attribution 4.0 International http://creativecommons.org/licenses/by/4.0/legalcode
 
 ## Acknowledgements
-This work was supported by the UKRI Centre for Doctoral Training in Artificial Intelligence and Music [grant number EP/S022694/1] and the National Institute of Informatics (NII), Japan. J. Tang is a research student jointly funded by the China Scholarship Council [grant number 202008440382] and Queen Mary University of London. G. Wiggins received funding from the Flemish Government under the "Onderzoeksprogramma Artificiële Intelligentie (AI) Vlaanderen". We thank the reviewers for their valuable feedback, which helped improve the quality of this work.
+This work was supported by the UKRI Centre for Doctoral Training in Artificial Intelligence and Music [grant number EP/S022694/1] and the National Institute of Informatics (NII), Japan. J. Tang is a research student jointly funded by the China Scholarship Council [grant number 202008440382] and Queen Mary University of London. G. Wiggins received funding from the Flemish Government under the "Onderzoeksprogramma Artificiële Intelligentie (AI) Vlaanderen". We thank the reviewers for their valuable feedback, which helped improve the quality of this work. 
