@@ -1,0 +1,6 @@
+*.wav
+wavs/
+.DS_Store
+index_button.html
+.vscode/
+midis/
